@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plumbing & Home Services — Lansing, MI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+body { font-family:'Inter',sans-serif; background:#141414; color:#e8e8e8; }
+
+:root {
+  --red:#dc2626;
+  --red-dark:#991b1b;
+  --gray-dark:#141414;
+  --gray-mid:#1e1e1e;
+  --gray-card:#252525;
+  --gray-border:#2e2e2e;
+  --white:#f5f5f5;
+  --muted:#a0a0a0;
+  --warm:#f5e6d0;
+}
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes floatOrb { 0%,100%{transform:translate(0,0)} 33%{transform:translate(30px,-40px)} 66%{transform:translate(-20px,20px)} }
+@keyframes reviewFade { 0%{opacity:0;transform:translateY(12px)} 10%{opacity:1;transform:translateY(0)} 85%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-12px)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+
+.bg-wrap { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; overflow:hidden; }
+.orb { position:absolute; border-radius:50%; filter:blur(120px); opacity:0.06; }
+.orb1 { width:700px; height:700px; background:#dc2626; top:-200px; right:-200px; animation:floatOrb 25s ease-in-out infinite; }
+.orb2 { width:400px; height:400px; background:#7c1d1d; bottom:10%; left:-100px; animation:floatOrb 30s ease-in-out infinite reverse; }
+
+main { position:relative; z-index:1; }
+
+/* Nav */
+nav { display:flex; justify-content:space-between; align-items:center; padding:1.25rem 3rem; background:rgba(20,20,20,0.97); backdrop-filter:blur(12px); border-bottom:1px solid var(--gray-border); position:sticky; top:0; z-index:100; animation:fadeIn 0.5s ease; }
+.logo { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:var(--white); }
+.logo span { color:var(--red); }
+.nav-links { display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap; }
+.nav-links a { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:color 0.2s; font-weight:500; }
+.nav-links a:hover { color:var(--white); }
+.nav-btn { background:var(--red) !important; color:#fff !important; padding:10px 20px; border-radius:4px; font-size:11px !important; }
+.nav-btn:hover { background:var(--red-dark) !important; }
+
+/* Hero */
+.hero { position:relative; min-height:580px; display:grid; grid-template-columns:1fr 1fr; overflow:hidden; }
+.hero-left { background:linear-gradient(135deg, #0a0a0a, #1a0a0a, #2d1010); padding:5rem 3rem; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(220,38,38,0.15); border:1px solid rgba(220,38,38,0.3); color:#f87171; font-size:11px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:6px 14px; border-radius:20px; margin-bottom:1.5rem; width:fit-content; animation:fadeUp 0.5s ease; }
+.pulse-dot { width:7px; height:7px; background:#ef4444; border-radius:50%; animation:pulse 2s infinite; }
+.hero-left h1 { font-family:'Playfair Display',serif; font-size:52px; font-weight:700; color:var(--white); line-height:1.1; margin-bottom:1.25rem; animation:fadeUp 0.6s ease 0.1s both; }
+.hero-left h1 span { color:var(--red); }
+.hero-left p { font-size:15px; color:var(--muted); line-height:1.8; margin-bottom:2rem; font-weight:300; max-width:480px; animation:fadeUp 0.6s ease 0.2s both; }
+.hero-btns { display:flex; gap:1rem; animation:fadeUp 0.6s ease 0.3s both; }
+.btn { padding:13px 28px; border-radius:4px; font-size:13px; font-weight:600; border:none; cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif; letter-spacing:0.5px; }
+.btn-red { background:var(--red); color:#fff; }
+.btn-red:hover { background:var(--red-dark); }
+.btn-outline { background:transparent; color:var(--white); border:1px solid var(--gray-border); }
+.btn-outline:hover { background:var(--gray-card); }
+.hero-right { position:relative; overflow:hidden; }
+.hero-img { width:100%; height:100%; object-fit:cover; opacity:0.6; }
+.hero-img-placeholder { width:100%; height:100%; min-height:580px; background:linear-gradient(135deg, #1a0a0a, #2d1010, #1e1e1e); display:flex; align-items:center; justify-content:center; }
+.hero-overlay { position:absolute; inset:0; background:linear-gradient(to right, #0a0a0a 0%, transparent 40%); z-index:1; }
+.hero-service-cards { position:absolute; bottom:2rem; right:2rem; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+.hero-scard { background:rgba(20,20,20,0.9); border:1px solid var(--gray-border); border-radius:8px; padding:1rem; text-align:center; backdrop-filter:blur(8px); }
+.hero-scard-icon { font-size:24px; margin-bottom:0.5rem; }
+.hero-scard-label { font-size:11px; font-weight:600; color:var(--white); letter-spacing:1px; text-transform:uppercase; }
+
+/* Stats */
+.stats-bar { background:var(--gray-mid); border-top:1px solid var(--gray-border); border-bottom:1px solid var(--gray-border); padding:1.5rem 3rem; display:grid; grid-template-columns:repeat(4,1fr); }
+.stat { text-align:center; border-right:1px solid var(--gray-border); padding:0.5rem; }
+.stat:last-child { border-right:none; }
+.stat-num { font-family:'Playfair Display',serif; font-size:30px; color:var(--white); font-weight:700; }
+.stat-label { font-size:10px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin-top:3px; }
+
+/* About */
+.about-section { padding:5rem 3rem; background:var(--gray-dark); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; max-width:1100px; margin:0 auto; }
+.about-tag { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--red); margin-bottom:0.75rem; font-weight:500; }
+.about-title { font-family:'Playfair Display',serif; font-size:34px; color:var(--white); font-weight:700; margin-bottom:1.5rem; line-height:1.2; }
+.about-title span { color:var(--red); }
+.about-text { font-size:15px; color:var(--muted); line-height:1.9; margin-bottom:1.25rem; font-weight:300; }
+.about-text strong { color:var(--white); font-weight:500; }
+.about-values { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2rem; }
+.value-item { background:var(--gray-card); border:1px solid var(--gray-border); border-radius:8px; padding:1.25rem; border-left:3px solid var(--red); }
+.value-title { font-size:13px; font-weight:600; color:var(--white); margin-bottom:0.4rem; }
+.value-desc { font-size:12px; color:var(--muted); line-height:1.6; }
+.about-img-side { background:var(--gray-card); border:1px solid var(--gray-border); border-radius:16px; padding:3rem; display:flex; flex-direction:column; gap:1.5rem; }
+.trust-badge { display:flex; align-items:center; gap:1rem; padding:1.25rem; background:var(--gray-mid); border:1px solid var(--gray-border); border-radius:8px; }
+.trust-icon { width:48px; height:48px; background:rgba(220,38,38,0.15); border:1px solid rgba(220,38,38,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.trust-text h4 { font-size:14px; font-weight:600; color:var(--white); margin-bottom:3px; }
+.trust-text p { font-size:12px; color:var(--muted); line-height:1.5; }
+
+/* Services */
+.services-section { padding:5rem 3rem; background:var(--gray-mid); }
+.sec-header { text-align:center; margin-bottom:3rem; }
+.sec-tag { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--red); margin-bottom:0.75rem; font-weight:500; }
+.sec-title { font-family:'Playfair Display',serif; font-size:36px; color:var(--white); font-weight:700; }
+.sec-line { width:40px; height:3px; background:var(--red); margin:0.75rem auto 0; border-radius:2px; }
+.services-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; max-width:1000px; margin:0 auto; }
+.svc-card { background:var(--gray-card); border:1px solid var(--gray-border); border-radius:16px; padding:2.5rem; transition:all 0.3s; position:relative; overflow:hidden; }
+.svc-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--red); transform:scaleX(0); transition:transform 0.3s; transform-origin:left; }
+.svc-card:hover { border-color:rgba(220,38,38,0.4); transform:translateY(-4px); }
+.svc-card:hover::before { transform:scaleX(1); }
+.svc-icon-wrap { width:64px; height:64px; background:rgba(220,38,38,0.12); border:1px solid rgba(220,38,38,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; }
+.svc-icon { font-size:28px; }
+.svc-name { font-family:'Playfair Display',serif; font-size:22px; color:var(--white); font-weight:600; margin-bottom:0.75rem; }
+.svc-desc { font-size:14px; color:var(--muted); line-height:1.8; margin-bottom:1.5rem; font-weight:300; }
+.svc-items { display:flex; flex-direction:column; gap:0.5rem; }
+.svc-item { display:flex; align-items:center; gap:0.75rem; font-size:13px; color:var(--muted); }
+.svc-item::before { content:''; width:6px; height:6px; background:var(--red); border-radius:50%; flex-shrink:0; }
+
+/* Reviews */
+.reviews-section { background:#0a0a0a; padding:5rem 3rem; text-align:center; }
+.reviews-section .sec-tag { color:#f87171; }
+.reviews-section .sec-title { color:var(--white); }
+.reviews-section .sec-line { background:var(--red); margin-bottom:3rem; }
+.review-box { max-width:700px; margin:0 auto; position:relative; min-height:200px; }
+.review-slide { position:absolute; width:100%; top:0; left:0; opacity:0; display:none; }
+.review-slide.active { display:block; animation:reviewFade 5.5s ease forwards; }
+.review-card-inner { background:var(--gray-card); border:1px solid var(--gray-border); border-radius:16px; padding:2.5rem; }
+.stars { font-size:18px; color:#f59e0b; letter-spacing:3px; margin-bottom:1.25rem; }
+.review-text { font-size:16px; color:#c0c0c0; line-height:1.8; font-style:italic; font-weight:300; margin-bottom:1.5rem; }
+.review-author { display:flex; align-items:center; justify-content:center; gap:1rem; }
+.author-avatar { width:40px; height:40px; border-radius:50%; background:rgba(220,38,38,0.2); border:1px solid rgba(220,38,38,0.3); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; color:var(--red); }
+.author-info { text-align:left; }
+.author-name { font-size:14px; font-weight:600; color:var(--white); }
+.author-location { font-size:11px; color:var(--muted); margin-top:2px; }
+.dots { display:flex; justify-content:center; gap:8px; margin-top:2rem; }
+.dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.15); cursor:pointer; transition:background 0.3s; border:none; }
+.dot.on { background:var(--red); }
+
+/* Contact */
+.contact-section { padding:5rem 3rem; background:var(--gray-dark); }
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; max-width:1000px; margin:0 auto; align-items:start; }
+.contact-left h3 { font-family:'Playfair Display',serif; font-size:28px; color:var(--white); margin-bottom:1rem; font-weight:700; }
+.contact-left p { font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:2rem; }
+.emergency-box { background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.3); border-radius:12px; padding:1.5rem; margin-bottom:2rem; }
+.emergency-box h4 { font-size:14px; font-weight:600; color:#f87171; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:1px; }
+.emergency-box p { font-size:13px; color:var(--muted); margin-bottom:0.75rem; }
+.emergency-phone { font-family:'Playfair Display',serif; font-size:28px; color:var(--white); font-weight:700; text-decoration:none; }
+.contact-links { display:flex; flex-direction:column; gap:0.75rem; }
+.clink { display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem; background:var(--gray-card); border:1px solid var(--gray-border); border-radius:8px; text-decoration:none; transition:border-color 0.2s; }
+.clink:hover { border-color:rgba(220,38,38,0.4); }
+.clink-icon { width:38px; height:38px; background:rgba(220,38,38,0.12); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.clink-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
+.clink-val { font-size:14px; font-weight:500; color:var(--white); }
+.contact-form { background:var(--gray-card); border:1px solid var(--gray-border); border-radius:16px; padding:2rem; }
+.contact-form h3 { font-family:'Playfair Display',serif; font-size:20px; color:var(--white); margin-bottom:1.5rem; }
+.fg { display:flex; flex-direction:column; gap:5px; margin-bottom:1rem; }
+.fg label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
+.fg input, .fg select, .fg textarea { padding:11px 14px; border:1px solid var(--gray-border); border-radius:6px; font-size:14px; font-family:'Inter',sans-serif; color:var(--white); background:#1a1a1a; outline:none; transition:border-color 0.2s; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color:rgba(220,38,38,0.5); }
+.fg select option { background:#1a1a1a; }
+.fg textarea { min-height:90px; resize:vertical; }
+.frow { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.fsub { width:100%; padding:13px; background:var(--red); color:#fff; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; margin-top:0.5rem; font-family:'Inter',sans-serif; transition:background 0.2s; }
+.fsub:hover { background:var(--red-dark); }
+.success-msg { display:none; text-align:center; padding:2rem; }
+.success-msg h4 { font-family:'Playfair Display',serif; font-size:20px; color:var(--white); margin-bottom:0.5rem; }
+.success-msg p { font-size:14px; color:var(--muted); }
+
+/* Hours */
+.hours-section { background:var(--gray-mid); padding:3rem; }
+.hours-inner { max-width:1000px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem; }
+.hour-card { background:var(--gray-card); border:1px solid var(--gray-border); border-radius:12px; padding:1.5rem; }
+.hour-card h4 { font-size:13px; font-weight:600; color:var(--white); text-transform:uppercase; letter-spacing:1px; margin-bottom:1rem; border-bottom:1px solid var(--gray-border); padding-bottom:0.75rem; }
+.hrow { display:flex; justify-content:space-between; font-size:13px; padding-bottom:0.5rem; margin-bottom:0.5rem; border-bottom:1px solid rgba(255,255,255,0.04); }
+.hrow:last-child { border:none; margin:0; padding:0; }
+.hday { color:var(--muted); }
+.htime { font-weight:500; color:var(--white); font-size:12px; }
+
+/* CTA */
+.cta { background:linear-gradient(135deg, #1a0000, var(--red-dark)); padding:5rem 3rem; text-align:center; }
+.cta h2 { font-family:'Playfair Display',serif; font-size:44px; color:#fff; margin-bottom:1rem; font-weight:700; }
+.cta p { font-size:15px; color:#fca5a5; margin-bottom:2rem; font-weight:300; }
+.btn-white { background:#fff; color:var(--red-dark); padding:15px 40px; font-size:14px; font-weight:700; border-radius:4px; border:none; cursor:pointer; font-family:'Inter',sans-serif; transition:background 0.2s; }
+.btn-white:hover { background:var(--warm); }
+
+footer { background:#0a0a0a; padding:2rem 3rem; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--gray-border); }
+.foot-logo { font-family:'Playfair Display',serif; font-size:18px; color:var(--white); font-weight:700; }
+.foot-logo span { color:var(--red); }
+.foot-links { display:flex; gap:2rem; }
+.foot-links a { font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:color 0.2s; }
+.foot-links a:hover { color:var(--white); }
+.foot-copy { font-size:11px; color:#3a3a3a; }
+</style>
+</head>
+<body>
+
+<div class="bg-wrap">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
+
+<main>
+<nav>
+  <div class="logo">Plumbing & Home Services</div>
+  <div class="nav-links">
+    <a onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'})">Home</a>
+    <a onclick="document.getElementById('plumbing').scrollIntoView({behavior:'smooth'})">Plumbing</a>
+    <a onclick="document.getElementById('heating').scrollIntoView({behavior:'smooth'})">Heating</a>
+    <a onclick="document.getElementById('ac').scrollIntoView({behavior:'smooth'})">AC</a>
+    <a onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">About</a>
+    <a onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'})">Reviews</a>
+    <a onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="nav-btn">Contact</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-badge"><div class="pulse-dot"></div> Available 24/7 — Emergency Service</div>
+    <h1>Trusted Home<br>Services in<br><span>Lansing, MI</span></h1>
+    <p>Plumbing, heating, AC and more — handled by licensed professionals who treat your home like their own. Fast, reliable, and always fair.</p>
+    <div class="hero-btns">
+      <button class="btn btn-red" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Free Quote</button>
+      <button class="btn btn-outline" onclick="document.getElementById('plumbing').scrollIntoView({behavior:'smooth'})">Our Services</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-placeholder">
+      <div style="text-align:center;color:rgba(255,255,255,0.15);">
+        <div style="font-size:80px;margin-bottom:1rem">🔧</div>
+        <div style="font-size:14px;letter-spacing:2px;text-transform:uppercase">Licensed & Insured</div>
+      </div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-service-cards">
+      <div class="hero-scard"><div class="hero-scard-label">Heat & AC</div></div>
+      <div class="hero-scard"><div class="hero-scard-label">Plumbing</div></div>
+      <div class="hero-scard"><div class="hero-scard-label">Air Quality</div></div>
+      <div class="hero-scard"><div class="hero-scard-label">Boiler</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Years of Service</div></div>
+  <div class="stat"><div class="stat-num">300+</div><div class="stat-label">Jobs Completed</div></div>
+  <div class="stat"><div class="stat-num">5★</div><div class="stat-label">Local Reviews</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Emergency Service</div></div>
+</div>
+
+<!-- About -->
+<div class="about-section" id="about">
+  <div class="about-grid">
+    <div>
+      <div class="about-tag">Who We Are</div>
+      <div class="about-title">A Company That Feels<br>Like <span>Family</span></div>
+      <p class="about-text">At Midwest Pro Services, we believe that <strong>your home is your sanctuary</strong> — and every repair, installation or maintenance call deserves the same care and respect we'd give our own family. We're not just technicians. We're your neighbors. We live in the same communities you do, our kids go to the same schools, and we genuinely care about the people we serve.</p>
+      <p class="about-text">Founded right here in Lansing, our team has spent over 15 years building relationships with homeowners across Mid-Michigan. We've seen firsthand how stressful a broken furnace in January or a burst pipe at midnight can be — which is why we answer every call with urgency, honesty and a smile. <strong>We don't upsell. We don't cut corners. We fix it right the first time.</strong></p>
+      <p class="about-text">Whether you need a quick repair or a full system installation, you can count on us to show up on time, explain everything clearly, and treat your home with the utmost respect. That's not just a promise — it's how we've done business since day one, and it's why so many Lansing families call us year after year.</p>
+      <div class="about-values">
+        <div class="value-item"><div class="value-title">Honest Pricing</div><div class="value-desc">No hidden fees. No surprises. We give you a clear quote before we start any work.</div></div>
+        <div class="value-item"><div class="value-title">Always On Time</div><div class="value-desc">We respect your schedule. If we say 9am, we mean 9am.</div></div>
+        <div class="value-item"><div class="value-title">Licensed & Insured</div><div class="value-desc">Every technician is fully licensed, background checked and insured.</div></div>
+        <div class="value-item"><div class="value-title">Satisfaction Guaranteed</div><div class="value-desc">If it's not right, we come back and fix it — no questions asked.</div></div>
+      </div>
+    </div>
+    <div class="about-img-side">
+      <div class="trust-badge">
+        <div class="trust-icon">🛡️</div>
+        <div class="trust-text"><h4>Licensed & Insured</h4><p>All technicians are fully certified and background checked for your peace of mind.</p></div>
+      </div>
+      <div class="trust-badge">
+        <div class="trust-icon">⚡</div>
+        <div class="trust-text"><h4>Same Day Service</h4><p>Most jobs scheduled same day or next day. Emergency calls answered immediately.</p></div>
+      </div>
+      <div class="trust-badge">
+        <div class="trust-icon">💰</div>
+        <div class="trust-text"><h4>Upfront Pricing</h4><p>You'll always know the cost before we start. No surprises on your final bill.</p></div>
+      </div>
+      <div class="trust-badge">
+        <div class="trust-icon">🏠</div>
+        <div class="trust-text"><h4>Family Owned</h4><p>Locally owned and operated right here in Lansing, MI since 2009.</p></div>
+      </div>
+      <div class="trust-badge">
+        <div class="trust-icon">🔄</div>
+        <div class="trust-text"><h4>Satisfaction Guarantee</h4><p>Not happy? We'll come back and make it right at no extra charge.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Services -->
+<div class="services-section" id="plumbing">
+  <div class="sec-header">
+    <div class="sec-tag">What We Do</div>
+    <div class="sec-title">Our Services</div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card" id="heating">
+      <div class="svc-icon-wrap"><div class="svc-icon">🌡️</div></div>
+      <div class="svc-name">Heat & AC</div>
+      <div class="svc-desc">Keep your home comfortable year-round. From furnace repairs in the dead of winter to AC tune-ups before summer hits — we've got you covered with fast, reliable HVAC service across Lansing and surrounding areas.</div>
+      <div class="svc-items">
+        <div class="svc-item">Furnace repair & installation</div>
+        <div class="svc-item">AC repair & replacement</div>
+        <div class="svc-item">Seasonal tune-ups & maintenance</div>
+        <div class="svc-item">Thermostat installation</div>
+        <div class="svc-item">24/7 emergency heating service</div>
+      </div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon-wrap"><div class="svc-icon">💧</div></div>
+      <div class="svc-name">Plumbing</div>
+      <div class="svc-desc">From a dripping faucet to a full pipe replacement — no plumbing job is too big or too small. Our licensed plumbers arrive on time, diagnose the issue fast and fix it right the first time so you can get back to your day.</div>
+      <div class="svc-items">
+        <div class="svc-item">Toilet repair & installation</div>
+        <div class="svc-item">Sink & faucet installation</div>
+        <div class="svc-item">Pipe repair & replacement</div>
+        <div class="svc-item">Water heater service</div>
+        <div class="svc-item">Drain cleaning & unclogging</div>
+      </div>
+    </div>
+    <div class="svc-card" id="ac">
+      <div class="svc-icon-wrap"><div class="svc-icon">💨</div></div>
+      <div class="svc-name">Air Quality</div>
+      <div class="svc-desc">The air inside your home matters more than most people realize. Our air quality services help you breathe easier by removing pollutants, allergens and moisture that can affect your family's health and comfort every single day.</div>
+      <div class="svc-items">
+        <div class="svc-item">Air purifier installation</div>
+        <div class="svc-item">Humidifier & dehumidifier service</div>
+        <div class="svc-item">Air duct cleaning</div>
+        <div class="svc-item">Filter replacement & upgrades</div>
+        <div class="svc-item">Indoor air quality testing</div>
+      </div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon-wrap"><div class="svc-icon">🔥</div></div>
+      <div class="svc-name">Boiler Services</div>
+      <div class="svc-desc">Boilers are complex systems that require expert hands. Our certified boiler technicians handle everything from routine maintenance to full replacements — ensuring your system runs safely, efficiently and reliably all winter long.</div>
+      <div class="svc-items">
+        <div class="svc-item">Boiler repair & diagnostics</div>
+        <div class="svc-item">New boiler installation</div>
+        <div class="svc-item">Annual boiler maintenance</div>
+        <div class="svc-item">Pressure & safety checks</div>
+        <div class="svc-item">Radiator & zone valve service</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reviews -->
+<div class="reviews-section" id="reviews">
+  <div class="sec-header">
+    <div class="sec-tag">Local Reviews</div>
+    <div class="sec-title">What Lansing Homeowners Say</div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="review-box">
+    <div class="review-slide active">
+      <div class="review-card-inner">
+        <div class="stars">★★★★★</div>
+        <div class="review-text">"Our furnace died at 11pm in January. Midwest Pro answered immediately and had a technician at our door within the hour. Fixed it same night. Absolutely incredible service — these guys are lifesavers."</div>
+        <div class="review-author"><div class="author-avatar">MT</div><div class="author-info"><div class="author-name">Marcus T.</div><div class="author-location">Lansing, MI — Local Review</div></div></div>
+      </div>
+    </div>
+    <div class="review-slide">
+      <div class="review-card-inner">
+        <div class="stars">★★★★★</div>
+        <div class="review-text">"They replaced all the plumbing under my kitchen and did an absolutely spotless job. Cleaned up everything when they were done, explained what they did and the price was exactly what they quoted. Couldn't ask for more."</div>
+        <div class="review-author"><div class="author-avatar">JR</div><div class="author-info"><div class="author-name">Jennifer R.</div><div class="author-location">Holt, MI — Local Review</div></div></div>
+      </div>
+    </div>
+    <div class="review-slide">
+      <div class="review-card-inner">
+        <div class="stars">★★★★★</div>
+        <div class="review-text">"I've been using Midwest Pro for 6 years now for everything — AC, plumbing, boiler. They always show up on time, never try to upsell me on things I don't need, and the work is always perfect. Real honest people."</div>
+        <div class="review-author"><div class="author-avatar">DK</div><div class="author-info"><div class="author-name">David K.</div><div class="author-location">East Lansing, MI — Local Review</div></div></div>
+      </div>
+    </div>
+    <div class="review-slide">
+      <div class="review-card-inner">
+        <div class="stars">★★★★★</div>
+        <div class="review-text">"Called about an air quality issue and they came out same day. Found the problem immediately, explained everything clearly and had it fixed within 2 hours. As a single mom I really appreciate honest, reliable service."</div>
+        <div class="review-author"><div class="author-avatar">SL</div><div class="author-info"><div class="author-name">Sandra L.</div><div class="author-location">DeWitt, MI — Local Review</div></div></div>
+      </div>
+    </div>
+    <div class="review-slide">
+      <div class="review-card-inner">
+        <div class="stars">★★★★★</div>
+        <div class="review-text">"These guys treated my home like it was their own. Put down drop cloths, wore boot covers and left everything cleaner than when they arrived. The boiler installation was flawless. This is how every company should operate."</div>
+        <div class="review-author"><div class="author-avatar">RB</div><div class="author-info"><div class="author-name">Robert B.</div><div class="author-location">St. Johns, MI — Local Review</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- Contact -->
+<div class="contact-section" id="contact">
+  <div class="sec-header">
+    <div class="sec-tag">Get In Touch</div>
+    <div class="sec-title">Request a Service</div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-left">
+      <h3>We're Here When You Need Us</h3>
+      <p>Whether it's a planned upgrade or an emergency situation — our team is ready to help. Call us directly or fill out the form and we'll get back to you within the hour.</p>
+      <div class="emergency-box">
+        <h4>🚨 24/7 Emergency Line</h4>
+        <p>For urgent plumbing, heating or AC emergencies call us anytime day or night.</p>
+        <a class="emergency-phone" href="tel:+15175550199">(517) 555-0199</a>
+      </div>
+      <div class="contact-links">
+        <a class="clink" href="tel:+15175550199"><div class="clink-icon">📞</div><div><div class="clink-label">Main Office</div><div class="clink-val">(517) 555-0199</div></div></a>
+        <a class="clink" href="/cdn-cgi/l/email-protection#cba3aea7a7a48ba6a2afbcaeb8bfbbb9a4e5a8a4a6"><div class="clink-icon">✉️</div><div><div class="clink-label">Email Us</div><div class="clink-val"><span class="__cf_email__" data-cfemail="48202d2424270825212c3f2d3b3c383a27662b2725">[email&#160;protected]</span></div></div></a>
+        <a class="clink" href="https://maps.google.com/?q=Lansing+MI" target="_blank"><div class="clink-icon">📍</div><div><div class="clink-label">Service Area</div><div class="clink-val">Lansing, Holt, DeWitt, East Lansing, St. Johns</div></div></a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3>Schedule a Service Call</h3>
+      <div id="formContent">
+        <div class="frow">
+          <div class="fg"><label>First Name</label><input type="text" placeholder="John"></div>
+          <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+        </div>
+        <div class="fg"><label>Phone Number</label><input type="tel" placeholder="(517) 555-0000"></div>
+        <div class="fg"><label>Service Needed</label>
+          <select>
+            <option value="">Select a service...</option>
+            <option>Heat & AC — Repair</option>
+            <option>Heat & AC — Installation</option>
+            <option>Plumbing — Repair</option>
+            <option>Plumbing — Installation</option>
+            <option>Air Quality Service</option>
+            <option>Boiler — Repair</option>
+            <option>Boiler — Installation</option>
+            <option>Emergency Service</option>
+            <option>General Inspection</option>
+          </select>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Preferred Date</label><input type="date"></div>
+          <div class="fg"><label>Preferred Time</label>
+            <select>
+              <option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option>
+              <option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option>
+              <option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Describe the Issue</label><textarea placeholder="Tell us what's going on and we'll come prepared..."></textarea></div>
+        <button class="fsub" onclick="submitForm()">Schedule Service Call</button>
+      </div>
+      <div class="success-msg" id="successMsg">
+        <div style="font-size:48px;margin-bottom:1rem">✅</div>
+        <h4>Request Received!</h4>
+        <p>We'll call you within 1 hour to confirm your appointment. For emergencies call us directly at (517) 555-0199.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hours -->
+<div class="hours-section">
+  <div class="hours-inner">
+    <div class="hour-card">
+      <h4>Office Hours</h4>
+      <div class="hrow"><span class="hday">Monday – Friday</span><span class="htime">7am – 6pm</span></div>
+      <div class="hrow"><span class="hday">Saturday</span><span class="htime">8am – 4pm</span></div>
+      <div class="hrow"><span class="hday">Sunday</span><span class="htime">Emergency Only</span></div>
+    </div>
+    <div class="hour-card">
+      <h4>Emergency Service</h4>
+      <div class="hrow"><span class="hday">Monday – Sunday</span><span class="htime">24 Hours</span></div>
+      <div class="hrow"><span class="hday">Holidays</span><span class="htime">24 Hours</span></div>
+      <div class="hrow"><span class="hday">Response Time</span><span class="htime">Under 1 Hour</span></div>
+    </div>
+    <div class="hour-card">
+      <h4>Service Area</h4>
+      <div class="hrow"><span class="hday">Lansing</span><span class="htime">✓ Covered</span></div>
+      <div class="hrow"><span class="hday">Holt & DeWitt</span><span class="htime">✓ Covered</span></div>
+      <div class="hrow"><span class="hday">East Lansing</span><span class="htime">✓ Covered</span></div>
+      <div class="hrow"><span class="hday">St. Johns</span><span class="htime">✓ Covered</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta">
+  <h2>Need Help Today?</h2>
+  <p>Call us now or schedule online — we'll be there fast.</p>
+  <button class="btn-white" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Schedule a Service Call</button>
+</div>
+
+<footer>
+  <div class="foot-logo">Plumbing & Home Services Services</div>
+  <div class="foot-links">
+    <a onclick="document.getElementById('plumbing').scrollIntoView({behavior:'smooth'})">Services</a>
+    <a onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">About</a>
+    <a onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'})">Reviews</a>
+    <a onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</a>
+  </div>
+  <div class="foot-copy">© 2025 Midwest Pro Services — Lansing, MI. All rights reserved.</div>
+</footer>
+</main>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const slides = document.querySelectorAll('.review-slide');
+const dotsEl = document.getElementById('dots');
+let cur = 0, timer;
+slides.forEach((_,i) => {
+  const d = document.createElement('button');
+  d.className = 'dot'+(i===0?' on':'');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+function goTo(i) {
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('on');
+  cur = i;
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('on');
+  clearInterval(timer);
+  timer = setInterval(next, 5500);
+}
+function next() { g
