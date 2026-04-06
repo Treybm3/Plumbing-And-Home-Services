@@ -521,4 +521,3 @@ function goTo(i) {
   timer = setInterval(next, 5500);
 }
 function next() { g
-  
